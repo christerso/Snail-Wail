@@ -8,6 +8,7 @@
 #include "physics/body.h"
 #include "snail.h"
 #include "graphics/particle_emitter.h"
+#include "coord_system2.h"
 
 Missile::Missile()
   : timeSinceUpdate(0.0f)
@@ -31,8 +32,8 @@ void Missile::update(float dt) {
       vec2 uvel = vel;
       uvel.normalize();
 
-      vec2 diff = lockedTarget->getTransform().position -
-        body->getTransform().position;
+      vec2 diff = lockedTarget->origin->getTransform().position -
+        body->origin->getTransform().position;
 
       vec2 udiff = diff;
       udiff.normalize();
@@ -47,8 +48,8 @@ void Missile::update(float dt) {
       
       mat2 spriteOrient(vel, vec2(-vel.y, vel.x));
 
-      body->setTransform(
-        CoordSystemData2(body->getTransform().position, spriteOrient)
+      body->origin->setTransform(
+        CoordSystemData2(body->origin->getTransform().position, spriteOrient)
         );
     }
     

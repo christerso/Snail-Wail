@@ -8,6 +8,7 @@
 #include "physics/body.h"
 #include "projectile.h"
 #include "missile.h"
+#include "coord_system2.h"
 
 Helmet::Helmet() {
    health = 100;
@@ -18,9 +19,11 @@ void Helmet::collided(const Ref<Physics::Geom>::SharedPtr & with) {
       if (Ref<Missile>::SharedPtr lockedMissile = Cast<Missile>(with->getOwner().lock())) {
          health -= 20;
 
+         const CoordSystem2::data_type transform = origin->getTransform();
+         
          if (Ref<Physics::Body>::SharedPtr lockedBody = snailBody.lock()) {
             //   lockedBody->addImpulse(with->getTransform().orientation * vec2(300.0f, 50.0f));
-            const vec2 delta = getTransform().position - lockedBody->getTransform().position;
+            const vec2 delta = transform.position - lockedBody->origin->getTransform().position;
 			lockedBody->addImpulse(delta * -5.0f);
          }
          
@@ -30,7 +33,7 @@ void Helmet::collided(const Ref<Physics::Geom>::SharedPtr & with) {
             vec2 vel = lockedBody->getVelocity();
             vel.normalize();
             mat2 spriteOrient(vel, vec2(-vel.y, vel.x));
-            lockedBody->setTransform(CoordSystemData2(lockedBody->getTransform().position, spriteOrient));
+            lockedBody->origin->setTransform(CoordSystemData2(lockedBody->origin->getTransform().position, spriteOrient));
          }
 
          lockedMissile->setFuel(0.001f);
@@ -39,7 +42,7 @@ void Helmet::collided(const Ref<Physics::Geom>::SharedPtr & with) {
          health -= 20;
          
          if (Ref<Physics::Body>::SharedPtr lockedBody = snailBody.lock())
-            lockedBody->addImpulse(with->getTransform().orientation * vec2(100.0f, 50.0f));
+            lockedBody->addImpulse(with->origin->getTransform().orientation * vec2(100.0f, 50.0f));
          
       }
 
@@ -50,12 +53,12 @@ void Helmet::collided(const Ref<Physics::Geom>::SharedPtr & with) {
    }
 }
 
-void Helmet::setTransform(const CoordSystemData2 & cs) {
-   body->setTransform(cs);
-}
+// void Helmet::setTransform(const CoordSystemData2 & cs) {
+//    body->setTransform(cs);
+// }
 
-CoordSystemData2 Helmet::getTransform() const {
-   return body->getTransform();
-}
+// CoordSystemData2 Helmet::getTransform() const {
+//    return body->getTransform();
+// }
 
 

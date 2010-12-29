@@ -21,14 +21,6 @@ Snail::Snail() {
 
 // TODO: fix event system.
 
-void Snail::setTransform(const CoordSystemData2 & cs) {
-  physBody->setTransform(cs);
-}
-
-CoordSystemData2 Snail::getTransform() const {
-  return physBody->getTransform();
-}
-
 // TODO: en klass; Item. Skjuta på den ska anropa en medlem i snigeln
 // antar att det blir downcast i alla fall.
 
@@ -39,7 +31,7 @@ void Snail::collided(const Ref<Physics::Geom>::SharedPtr & with) {
       if (lockedMissile->shooter.lock().get() != this) { // hit by a bullet
         lockedMissile->kill();
         increaseHealth(-20);
-        const vec2 delta = getTransform().position - lockedMissile->getTransform().position;
+        const vec2 delta = origin->getTransform().position - lockedMissile->origin->getTransform().position;
         physBody->addImpulse(delta * 30.0f);
       }
       
@@ -48,7 +40,7 @@ void Snail::collided(const Ref<Physics::Geom>::SharedPtr & with) {
       if (lockedProjectile->shooter.lock().get() != this) { // hit by a bullet
         lockedProjectile->kill();
         increaseHealth(-5);
-        const vec2 delta = getTransform().position - lockedProjectile->getTransform().position;
+        const vec2 delta = origin->getTransform().position - lockedProjectile->origin->getTransform().position;
         physBody->addImpulse(delta * 8.0f);
       }
     }

@@ -65,17 +65,17 @@ rect Sprite::getBoundingBox() const {
    return ret;
 }
 
-void Sprite::setTransform(const CoordSystemData2 & cs) {
-   position = cs.position;
-   orientation = cs.orientation;
+// void Sprite::setTransform(const CoordSystemData2 & cs) {
+//    position = cs.position;
+//    orientation = cs.orientation;
    
-   if (Ref<CoordSystem2>::SharedPtr lockedDelegate = delegate.lock())
-      lockedDelegate->setTransform(cs);
-}
+//    if (Ref<CoordSystem2>::SharedPtr lockedDelegate = delegate.lock())
+//       lockedDelegate->setTransform(cs);
+// }
 
-CoordSystemData2 Sprite::getTransform() const {
-   return CoordSystemData2(position, orientation);
-}
+// CoordSystemData2 Sprite::getTransform() const {
+//    return CoordSystemData2(position, orientation);
+// }
 
 
 rect Sprite::getSize() const {
@@ -96,9 +96,9 @@ void Sprite::setEventHandler(const Ref<SpriteEventHandler>::WeakPtr & eventHandl
    this->eventHandler = eventHandler;
 }
 
-void Sprite::setDelegate(const Ref<CoordSystem2> & delegate) {
-   this->delegate = delegate;
-}
+// void Sprite::setDelegate(const Ref<CoordSystem2> & delegate) {
+//    this->delegate = delegate;
+// }
 
 void Sprite::setGrid(int columns, int rows) {
    this->columns = columns;

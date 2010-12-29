@@ -10,6 +10,7 @@
 #include "physics/body.h"
 #include "snail.h"
 #include "projectile.h"
+#include "coord_system2.h"
 
 BulletWeapon::BulletWeapon(ObjectCreator &creator, World &world,
                            const Ref<Snail>::WeakPtr &shooter)
@@ -30,9 +31,9 @@ void BulletWeapon::shoot() {
     if (invertForward)
       forward = -forward;
     
-    bullet->setTransform(cs);
+    bullet->origin->setTransform(cs);
     bullet->body->addImpulse(vec2(2500.0f, 0.0f) * forward);
-    bullet->body->setTransform(cs);
+    bullet->body->origin->setTransform(cs);
 
     if (Ref<Snail>::SharedPtr lockedSnail = shooter.lock()) {
       bullet->shooter = shooter; // FIXME: shooter should not be here, but target can

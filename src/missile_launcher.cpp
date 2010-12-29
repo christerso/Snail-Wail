@@ -10,6 +10,7 @@
 #include "world.h"
 #include "physics/body.h"
 #include "snail.h"
+#include "coord_system2.h"
 
 MissileLauncher::MissileLauncher(ObjectCreator &creator, World &world,
                                  const Ref<Snail>::WeakPtr &shooter)
@@ -38,9 +39,9 @@ void MissileLauncher::shoot() {
     if (invertForward)
       forward = -forward;
     
-    missile->setTransform(cs);
+    missile->origin->setTransform(cs);
     missile->body->addImpulse(vec2(500.0f, 0.0f) * forward);
-    missile->body->setTransform(cs);
+    missile->body->origin->setTransform(cs);
 
     if (Ref<Snail>::SharedPtr lockedSnail = shooter.lock()) {
       missile->target = shooter.lock()->enemy;

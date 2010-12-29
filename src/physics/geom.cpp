@@ -6,6 +6,7 @@
 
 #include "geom.h"
 #include "body.h"
+#include "coord_system2.h"
 #include "graphics/vertex.h"
 #include "graphics/render_list.h"
 #include "graphics/mesh.h"
@@ -23,9 +24,9 @@ void Physics::Geom::setBody(const Ref<Physics::Body> & body) {
    this->linkedBody = body;
 }
 
-void Physics::Geom::setRefFrame(const Ref<CoordSystem2> & refFrame) {
-   this->refFrame = refFrame;
-}
+// void Physics::Geom::setRefFrame(const Ref<CoordSystem2> & refFrame) {
+//    this->refFrame = refFrame;
+// }
 
 rect Physics::Geom::getSize() const {
    return size;
@@ -43,13 +44,13 @@ void Physics::Geom::setOffset(const vec2 & offset) {
 //    return mat2::Identity;
 // }
 
-void Physics::Geom::setTransform(const CoordSystemData2 & cs) {
-   position = cs.position;
-}
+// void Physics::Geom::setTransform(const CoordSystemData2 & cs) {
+//    position = cs.position;
+// }
 
-CoordSystemData2 Physics::Geom::getTransform() const {
-  return CoordSystemData2(position, mat2::Identity());
-}
+// CoordSystemData2 Physics::Geom::getTransform() const {
+//   return CoordSystemData2(position, mat2::Identity());
+// }
 
 void Physics::Geom::setCollisionId(unsigned int collisionId) {
    this->collisionId = collisionId;
@@ -77,11 +78,12 @@ void Physics::Geom::collided(const Ref<Geom>::SharedPtr & with) {
 
 void Physics::Geom::enqueueRender(const Ref<Graphics::RenderList>::SharedPtr & renderList) {
    vec2 position;
-   if (Ref<Physics::Body>::SharedPtr lockedBody = linkedBody.lock())
-	  position = lockedBody->getTransform().position;
-   else if (Ref<CoordSystem2>::SharedPtr lockedRef = refFrame.lock())
-	  position = lockedRef->getTransform().position;
-
+//    if (Ref<Physics::Body>::SharedPtr lockedBody = linkedBody.lock())
+// 	  position = lockedBody->getTransform().position;
+//    else if (Ref<CoordSystem2>::SharedPtr lockedRef = refFrame.lock())
+// 	  position = lockedRef->getTransform().position;
+   position = origin->getTransform().position;
+   
    position += size.origin;
    
    // TODO: get vertices from size instead

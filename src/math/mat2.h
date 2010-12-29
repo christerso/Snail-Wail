@@ -32,6 +32,8 @@ public:
   
   static mat2 Identity();
   static mat2 Zero();
+
+  static mat2 Rotation(float rad);
   
   float elements[2][2];
 };

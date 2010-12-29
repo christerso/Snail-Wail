@@ -9,35 +9,34 @@
 #define CACTUS_H
 
 #include "object.h"
-#include "coord_system2.h"
 #include "graphics/sprite.h"
 #include "ref.h"
 #include "physics/geom.h"
 
 //namespace Graphics {class Sprite; }
-namespace Physics {class Body; class Geom; }
+namespace Physics {
+class Body;
+class Geom;
+}
 
 class World;
 
-class Cactus : public Object, public CoordSystem2, public Graphics::SpriteEventHandler, public Physics::GeomEventHandler {
+class Cactus : public Object, public Graphics::SpriteEventHandler, public Physics::GeomEventHandler {
 public:
-   Cactus();
+  Cactus();
    
-   // CoordSystem2 ------------------------------------------------
-   void setTransform(const CoordSystemData2 & cs);
-   CoordSystemData2 getTransform() const;
-   
-   void collided(const Ref<Physics::Geom>::SharedPtr & with);
-   void leftView();
+  void collided(const Ref<Physics::Geom>::SharedPtr & with);
+  void leftView();
 
-   Ref<Graphics::Sprite> sprite;
-   Ref<Physics::Body> body;
-   Ref<Physics::Geom> geom;
-
+  Ref<Graphics::Sprite> sprite;
+  Ref<Physics::Body> body;
+  Ref<Physics::Geom> geom;
+  Ref<CoordSystem2> origin;
+  
 private:
-   void increaseHealth(float by);
-   
-   float health;
+  void increaseHealth(float by);
+  
+  float health;
 };
 
 #endif /* end of include guard: CACTUS_H */

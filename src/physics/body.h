@@ -7,46 +7,43 @@
 #ifndef BODY_H_JI764YY5
 #define BODY_H_JI764YY5
 
-#include "coord_system2.h"
 #include "ref.h"
+#include "math/vec2.h"
+#include "math/mat2.h"
 
 class Object;
+class CoordSystem2;
 
 namespace Physics {
-   class Subsystem;
+class Subsystem;
    
-   /*
-    * A physical body that can be acted upon through forces
-    */
-   class Body : public CoordSystem2 {
-   private:
-      Body(Physics::Subsystem & subsystem); 
-      
-   public:
-      
-      friend class Physics::Subsystem;
+/*
+ * A physical body that can be acted upon through forces
+ */
+class Body {
+private:
+  Body(Physics::Subsystem & subsystem); 
+  
+public:
+  
+  friend class Physics::Subsystem;
+  
+  void update(float dt);
+  void addImpulse(const vec2 &vel);
+  //void setVelocity(const vec2 & vel);
+  vec2 getVelocity() const;
+  
+  void setOwner(const Ref<Object>::WeakPtr &owner);
+  Ref<Object>::WeakPtr getOwner() const;
 
-      void update(float dt);
-      void setDelegate(const Ref<CoordSystem2> & newTarget);
+  Ref<CoordSystem2> origin;
 
-	  void addImpulse(const vec2 & vel);
-	  //void setVelocity(const vec2 & vel);
-	  vec2 getVelocity() const;
-
-	  void setOwner(const Ref<Object>::WeakPtr & owner);
-	  Ref<Object>::WeakPtr getOwner() const;
-	  
-      // CoordSystem2 ---------------------------------------
-      void setTransform(const CoordSystemData2 & cs);
-      CoordSystemData2 getTransform() const;
-      
-   private:
-      Physics::Subsystem & subsystem;
-      Ref<CoordSystem2> delegate;
-	  Ref<Object>::WeakPtr owner;
-      vec2 position, velocity;
-	  mat2 orientation;
-   };
+private:
+  Physics::Subsystem & subsystem;
+  Ref<Object>::WeakPtr owner;
+  vec2 position, velocity;
+  mat2 orientation;
+};
    
 }
 

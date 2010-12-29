@@ -5,6 +5,7 @@
  */
 
 #include "mat2.h"
+#include <cmath>
 
 mat2 mat2::Identity() {
   static mat2 identity(1.0f, 0.0f, 0.0f, 1.0f);
@@ -68,3 +69,8 @@ mat2 &mat2::operator *= (const mat2 &m) {
   return *this;
 }
 
+mat2 mat2::Rotation(float rad) {
+  const float negrad = -rad; // I prefer the rotation to be CW
+  return mat2(cos(negrad), -sin(negrad),
+              sin(negrad), cos(negrad));
+}

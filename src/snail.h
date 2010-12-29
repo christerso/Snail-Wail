@@ -11,17 +11,23 @@
 #include "ref.h"
 #include "physics/geom.h"
 #include "physics/body.h"
-#include "coord_system2.h"
-
-namespace Graphics {class Sprite; class Subsystem; }
-namespace Physics {class Geom; }
 
 class PlayerEntity;
 class World;
 class vec2;
 class Helmet;
 class HealthMeter;
+class CoordSystem2;
 
+namespace Graphics {
+class Sprite;
+class Subsystem;
+}
+
+namespace Physics {
+class Geom;
+}
+  
 class SnailEventHandler {
 public:
   virtual ~SnailEventHandler() {}
@@ -30,13 +36,10 @@ public:
 };
 
 
-class Snail : public Object, public CoordSystem2, public Physics::GeomEventHandler {
+class Snail : public Object, public Physics::GeomEventHandler {
 public:
   Snail();
   
-  void setTransform(const CoordSystemData2 & cs);
-  CoordSystemData2 getTransform() const;
-   
   void collided(const Ref<Physics::Geom>::SharedPtr & with);
   
   void setEventHandler(const Ref<SnailEventHandler> & newHandler);
@@ -49,6 +52,7 @@ public:
   Ref<Physics::Geom> physGeom;
   Ref<Physics::Body> physBody;
   Ref<Snail>::WeakPtr enemy;
+  Ref<CoordSystem2> origin;
   
 private:
   int health;

@@ -5,6 +5,7 @@
  */
 
 #include "body.h"
+#include "coord_system2.h"
 
 Physics::Body::Body(Physics::Subsystem & subsystem)
    : subsystem(subsystem)
@@ -13,10 +14,6 @@ Physics::Body::Body(Physics::Subsystem & subsystem)
    , orientation(mat2::Identity())
 {
    
-}
-
-void Physics::Body::setDelegate(const Ref<CoordSystem2> & newTarget) {
-   delegate = newTarget;
 }
 
 void Physics::Body::setOwner(const Ref<Object>::WeakPtr & owner) {
@@ -28,20 +25,22 @@ Ref<Object>::WeakPtr Physics::Body::getOwner() const {
 }
 
 void Physics::Body::update(float dt) {
-   if (Ref<CoordSystem2>::SharedPtr target = delegate.lock()) {
-      position += velocity * dt;
-      target->setTransform(CoordSystemData2(position, orientation));  
-   }
+  if (Ref<CoordSystem2>::SharedPtr lockedOrigin = origin.lock()) {
+     position += velocity * dt;
+     lockedOrigin->setTransform(CoordSystemData2(position, orientation));  
+  }
+
+  
 }
 
-void Physics::Body::setTransform(const CoordSystemData2 & cs) {
-   orientation = cs.orientation;
-   position = cs.position;
-}
+// void Physics::Body::setTransform(const CoordSystemData2 & cs) {
+//    orientation = cs.orientation;
+//    position = cs.position;
+// }
 
-CoordSystemData2 Physics::Body::getTransform() const {
-   return CoordSystemData2(position, orientation);
-}
+// CoordSystemData2 Physics::Body::getTransform() const {
+//    return CoordSystemData2(position, orientation);
+// }
 
 
 // void Physics::Body::setVelocity(const vec2 & vel) {

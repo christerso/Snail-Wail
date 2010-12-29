@@ -9,6 +9,7 @@
 #include <limits>
 
 #include "ref.h"
+#include "coord_system2.h"¨
 #include "phys_subsystem.h"
 #include "physics/body.h"
 #include "physics/geom.h"
@@ -62,11 +63,11 @@ void Subsystem::checkCollisions() {
       if (Ref<Geom>::SharedPtr lockedGeom = iter->lock()) {
          rect fixedRect = lockedGeom->getSize();
          
-         if (Ref<Physics::Body>::SharedPtr lockedBody = lockedGeom->linkedBody.lock())
-            fixedRect.origin += lockedBody->getTransform().position;
-         else if (Ref<CoordSystem2>::SharedPtr lockedRef = lockedGeom->refFrame.lock())
-            fixedRect.origin += lockedRef->getTransform().position;
-         
+//          if (Ref<Physics::Body>::SharedPtr lockedBody = lockedGeom->linkedBody.lock())
+//             fixedRect.origin += lockedBody->getTransform().position;
+//          else if (Ref<CoordSystem2>::SharedPtr lockedRef = lockedGeom->refFrame.lock())
+//             fixedRect.origin += lockedRef->getTransform().position;
+         fixedRect.origin += lockedGeom->origin->getTransform().position;
          resGeoms.push_back(std::make_pair(fixedRect, lockedGeom));
          ++iter;
       }

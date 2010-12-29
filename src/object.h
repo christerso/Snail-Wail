@@ -15,26 +15,26 @@ class Object;
 
 class ObjectEventListener {
 public:
-   virtual ~ObjectEventListener() {}
+  virtual ~ObjectEventListener() {}
 
-   virtual void onObjectDeath(const Object & object) =0;
+  virtual void onObjectDeath(const Object & object) =0;
 };
 
 class Object {
 public:
-   Object();
-   virtual ~Object() {}
+  Object();
+  virtual ~Object() {}
 
-   void addedOwner(ObjectList * owner);
-   void kill();
-   void setEventListener(const Ref<ObjectEventListener> & newListener);
+  void addedOwner(ObjectList * owner);
+  void kill();
+  void setEventListener(const Ref<ObjectEventListener> & newListener);
 
-   virtual void activate();
-   virtual void deactivate();
-   
+  virtual void activate();
+  virtual void deactivate();
+
 private:
-   Ref<ObjectEventListener> eventListener;
-   ObjectList * owner;
+  Ref<ObjectEventListener> eventListener;
+  ObjectList * owner;
 };
 
 

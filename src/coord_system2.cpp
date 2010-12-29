@@ -27,10 +27,8 @@ CoordSystemData2::CoordSystemData2(const position_type &pos,
 }
 
 CoordSystemData2 CoordSystemData2::transform(const CoordSystemData2 &other) const {
-  CoordSystemData2 ret = *this;
-  ret.position += other.position;
-  ret.orientation *= other.orientation;
-  return ret;
+  return CoordSystemData2(this->position + this->orientation * other.position,
+                          this->orientation * other.orientation);
 }
 
 CoordSystemData2 CoordSystemData2::inverse() const {

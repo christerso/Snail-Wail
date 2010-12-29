@@ -15,13 +15,13 @@ Cactus::Cactus()
 {
 }
 
-void Cactus::setTransform(const CoordSystemData2 & cs) {
-   body->setTransform(cs);
-}
+// void Cactus::setTransform(const CoordSystemData2 & cs) {
+//    body->setTransform(cs);
+// }
 
-CoordSystemData2 Cactus::getTransform() const {
-   return body->getTransform();
-}
+// CoordSystemData2 Cactus::getTransform() const {
+//    return body->getTransform();
+// }
 
 
 void Cactus::leftView() {

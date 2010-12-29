@@ -62,7 +62,7 @@ void PlayerEntity::update(float dt) {
   
   if (Ref<Physics::Body>::SharedPtr lockedTarget = target.lock()) {
     // Restrain the snail's body to the screen
-    vec2 pos = lockedTarget->getTransform().position;
+    vec2 pos = lockedTarget->origin->getTransform().position;
     pos.x = std::max(pos.x, 32.0f);
     pos.x = std::min(pos.x, 800.0f - 32.0f);
     pos.y = std::max(pos.y, 32.0f);
@@ -76,18 +76,18 @@ void PlayerEntity::update(float dt) {
     }
     
     lockedTarget->addImpulse(-lockedTarget->getVelocity() * 0.005f);
-    lockedTarget->setTransform(CoordSystemData2(pos + delta * 5.0f * dt, lockedTarget->getTransform().orientation));
+    lockedTarget->origin->setTransform(CoordSystemData2(pos + delta * 5.0f * dt, lockedTarget->origin->getTransform().orientation));
   }
 }
 
 void PlayerEntity::setTransform(const CoordSystemData2 & cs) {
   if (Ref<Physics::Body>::SharedPtr lockedBody = target.lock())
-    lockedBody->setTransform(cs);
+    lockedBody->origin->setTransform(cs);
 }
 
 CoordSystemData2 PlayerEntity::getTransform() const {
   if (Ref<Physics::Body>::SharedPtr lockedTarget = target.lock())
-    return lockedTarget->getTransform();
+    return lockedTarget->origin->getTransform();
   
   return CoordSystemData2::Identity();
 }
@@ -137,11 +137,13 @@ void PlayerEntity::setWeapon(const Ref<ProjectileWeapon> &weapon) {
   
   this->weapon = weapon;
 
+  typedef TransformedCoordSystem<CoordSystem2> TransformedCoordSystem2;
+  
    // Set the origin of the weapon. Ugly, it's using the shooter!
   weapon->setCoordSystem(
     Owning(
-      new CoordSystemTransformer<CoordSystem2>(
-        Observing(shooter.lock()),
+      new TransformedCoordSystem2(
+        Observing(shooter.lock()->origin),
         CoordSystem2::data_type(vec2::Zero(), mat2::Identity())
         )
       )

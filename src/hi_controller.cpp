@@ -11,6 +11,7 @@
 #include "math/vec2.h"
 #include "graphics/sprite.h"
 #include "triggerable.h"
+#include "coord_system2.h"
 
 static vec2 dirToVecMap[4] = {
    vec2(0.0f, -1.0f), 
