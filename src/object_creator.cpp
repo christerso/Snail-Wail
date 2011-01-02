@@ -56,6 +56,7 @@ Ref<Projectile>::SharedPtr ObjectCreator::createProjectile() {
    return newProjectile;
 }
 
+
 Ref<Snail>::SharedPtr ObjectCreator::createSnail(int team, ObjectCreator & creator) {
    float xPos = 0.0f;
    if (team == 0)
@@ -64,6 +65,8 @@ Ref<Snail>::SharedPtr ObjectCreator::createSnail(int team, ObjectCreator & creat
       xPos = 700.0f;
    
    Ref<Snail>::SharedPtr newSnail(new Snail);
+
+   // Create a coordinate system that describes the origin of the snail
    newSnail->origin = Owning(new CoordSystemLeaf2);
 
    std::string spriteFilename;
