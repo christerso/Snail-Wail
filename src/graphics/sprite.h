@@ -20,6 +20,7 @@
 #include "graphics/vertex.h"
 #include "math/rect.h"
 #include "ref.h"
+#include "coord_system2.h"
 
 class CoordSystem2;
 
@@ -55,12 +56,11 @@ public:
   
 private:
   std::vector<Vertex2T2> constructVertices() const;
+  CoordSystemData2 getTransformation() const;
   
   Ref<SpriteEventHandler>::WeakPtr eventHandler;
   Ref<Graphics::Renderer>::SharedPtr renderer;
   rect size, originalSize;
-  vec2 position;
-  mat2 orientation;
   int columns, rows;
   int cellX, cellY;
 };

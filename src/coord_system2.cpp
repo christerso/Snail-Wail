@@ -7,6 +7,8 @@
 //===----------------------------------------------------------------------===//
 //
 // This file implements the data class and leaf class for 2D coordinate systems.
+// A "leaf" class is an implementation of the CoordSystem interface and contains
+// concrete data that it returns, making it a leaf in a tree of transformations.
 //
 //===----------------------------------------------------------------------===//
 
@@ -24,6 +26,10 @@ CoordSystemData2::CoordSystemData2(const position_type &pos,
   , orientation(orient)
 {
   
+}
+
+vec2 CoordSystemData2::transform(const vec2 &other) const {
+  return vec2(this->position + this->orientation * other);
 }
 
 CoordSystemData2 CoordSystemData2::transform(const CoordSystemData2 &other) const {

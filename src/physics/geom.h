@@ -53,8 +53,8 @@ public:
   
   Ref<CoordSystem2> origin;
   Ref<Physics::Body> linkedBody;   
+
 private:
-  
   Ref<GeomEventHandler> eventHandler;
   
   rect size;
@@ -63,7 +63,6 @@ private:
   std::bitset<32> collisionMask;
   unsigned int collisionId;
   
-  vec2 position;
 };
 }
 

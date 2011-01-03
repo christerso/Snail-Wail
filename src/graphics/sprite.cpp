@@ -16,8 +16,7 @@ using Graphics::Renderer;
 using Graphics::SpriteEventHandler;
 
 Sprite::Sprite(const Ref<Renderer>::SharedPtr & renderer, const rect & size) 
-  : orientation(mat2::Identity())
-  , renderer(renderer)
+  : renderer(renderer)
   , size(size)
   , originalSize(size)
 {
@@ -26,42 +25,44 @@ Sprite::Sprite(const Ref<Renderer>::SharedPtr & renderer, const rect & size)
 }
 
 std::vector<Vertex2T2> Sprite::constructVertices() const {
-   std::vector<Vertex2T2> vertices;
-   vertices.reserve(4);
-   
-   rect offsetRect = size;
-   vec2 ul, lr;
-   offsetRect.getCoords(ul, lr);
+  std::vector<Vertex2T2> vertices;
+  vertices.reserve(4);
+  
+  rect offsetRect = size;
+  vec2 ul, lr;
+  offsetRect.getCoords(ul, lr);
+  
+  // TODO: clean this up with a CoordSystemData
 
-   // TODO: clean this up with a CoordSystemData
-   ul = ul;
-   lr = lr;
-//   ul += position;
-//   lr += position;
+  // Calculate coordinates for the active cell
+  float cw = 1.0f / static_cast<float>(columns);
+  float ch = 1.0f / static_cast<float>(rows);
+  
+  float t1x = cw * static_cast<float>(cellX);
+  float t1y = ch * static_cast<float>(cellY);
+  float t2x = t1x + cw;
+  float t2y = t1y + ch;
+  
+  vertices.push_back(Vertex2T2(ul, vec2(t1x, t1y)));
+  vertices.push_back(Vertex2T2(vec2(lr.x, ul.y), vec2(t2x, t1y)));
+  vertices.push_back(Vertex2T2(lr, vec2(t2x, t2y)));
+  vertices.push_back(Vertex2T2(vec2(ul.x, lr.y), vec2(t1x, t2y)));
+  
+  
+  // Transform the model data, taking them into world coords
+  CoordSystemData2 transformation = getTransformation();
+  
+  for (size_t i = 0; i < vertices.size(); ++i) {
+    vertices[i].pos = transformation.transform(vertices[i].pos);
+  }
    
-   float cw = 1.0f / static_cast<float>(columns);
-   float ch = 1.0f / static_cast<float>(rows);
-
-   float t1x = cw * static_cast<float>(cellX);
-   float t1y = ch * static_cast<float>(cellY);
-   float t2x = t1x + cw;
-   float t2y = t1y + ch;
-   
-   vertices.push_back(Vertex2T2(ul, vec2(t1x, t1y)));
-   vertices.push_back(Vertex2T2(vec2(lr.x, ul.y), vec2(t2x, t1y)));
-   vertices.push_back(Vertex2T2(lr, vec2(t2x, t2y)));
-   vertices.push_back(Vertex2T2(vec2(ul.x, lr.y), vec2(t1x, t2y)));
-
-   for (size_t i = 0; i < vertices.size(); ++i) {
-      vertices[i].pos = position + orientation * vertices[i].pos;
-   }
-   
-   return vertices;
+  return vertices;
 }
 
 rect Sprite::getBoundingBox() const {
    rect ret = getSize();
-   ret.origin = position;
+   ret.origin = getTransformation().transform(ret.origin);
+   
    return ret;
 }
 
@@ -120,3 +121,12 @@ void Sprite::enqueueRender(const Ref<Graphics::RenderList>::SharedPtr & renderLi
    renderList->insert(renderer, mesh);
 }
 
+CoordSystemData2 Sprite::getTransformation() const {
+  CoordSystemData2 ret = CoordSystemData2::Identity();
+  
+  if (Ref<CoordSystem2>::SharedPtr lockedOrigin = origin.lock()) {
+    ret = lockedOrigin->getTransform();
+  }
+
+  return ret;
+}

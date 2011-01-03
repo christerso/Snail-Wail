@@ -8,6 +8,27 @@
 #include "object_list.h"
 #include <stdexcept>
 #include <iostream>
+#include <algorithm>
+#include <iterator>
+
+namespace {
+/// Helper struct for sorting pairs by their first value
+template<class Type>
+struct less1st : public std::binary_function<Type, Type, bool> {
+  bool operator() (const Type &lhs, const Type &rhs) const {
+    return lhs.first < rhs.first;
+  }
+
+  bool operator() (const Type &lhs, const typename Type::first_type &rhs) const {
+    return lhs.first < rhs;
+  }
+
+  bool operator() (const typename Type::first_type &lhs, const Type &rhs) const {
+    return lhs < rhs.first;
+  }
+};
+
+}
 
 Object::Object() {
    owner = NULL;
@@ -46,3 +67,33 @@ void Object::activate() {
 void Object::deactivate() {
 
 }
+
+void Object::addTags(std::pair<std::string, Tag> *begin,
+                     std::pair<std::string, Tag> *end) {
+  std::copy(begin, end, std::back_inserter(tags));
+  std::sort(tags.begin(), tags.end(), less1st<TagPair>());
+}
+
+
+Object::Tag Object::getTag(const std::string &id) const {
+  std::pair<TagVector::const_iterator, TagVector::const_iterator> tagRange =
+    std::equal_range(tags.begin(), tags.end(), id, less1st<TagPair>());
+
+  Tag ret;
+
+  if (std::distance(tagRange.first, tagRange.second) > 1) {
+    // if the string matched more than one tag
+    std::cout << "warning: ambiguous tag '" << id << "'";
+    ret = tagRange.first->second;
+  }
+  else if (tagRange.first != tagRange.second) {
+    // if it could find a result
+    ret = tagRange.first->second;
+  }
+  else {
+    throw std::runtime_error("tag not found: '" + id + "'");
+  }
+  
+  return ret;
+}
+

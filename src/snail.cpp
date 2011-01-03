@@ -17,6 +17,12 @@
 
 Snail::Snail() {
   health = 100;
+
+  TagPair tags[] = {
+    std::make_pair("origin", &origin)
+  };
+
+  addTags(&tags[0], &tags[0] + 1);
 }
 
 // TODO: fix event system.

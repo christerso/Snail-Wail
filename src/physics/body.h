@@ -22,7 +22,7 @@ class Subsystem;
  */
 class Body {
 private:
-  Body(Physics::Subsystem & subsystem); 
+  Body(Physics::Subsystem &subsystem); 
   
 public:
   
@@ -30,7 +30,6 @@ public:
   
   void update(float dt);
   void addImpulse(const vec2 &vel);
-  //void setVelocity(const vec2 & vel);
   vec2 getVelocity() const;
   
   void setOwner(const Ref<Object>::WeakPtr &owner);
@@ -39,10 +38,9 @@ public:
   Ref<CoordSystem2> origin;
 
 private:
-  Physics::Subsystem & subsystem;
+  Physics::Subsystem &subsystem;
   Ref<Object>::WeakPtr owner;
-  vec2 position, velocity;
-  mat2 orientation;
+  vec2 velocity;
 };
    
 }

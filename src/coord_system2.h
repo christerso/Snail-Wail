@@ -29,6 +29,7 @@ public:
   
   CoordSystemData2(const position_type &pos, const orientation_type &orient);
   
+  vec2 transform(const vec2 &other) const;
   CoordSystemData2 transform(const CoordSystemData2 &other) const;
   CoordSystemData2 inverse() const;
   
