@@ -9,7 +9,7 @@
 #include <limits>
 
 #include "ref.h"
-#include "coord_system2.h"¨
+#include "coord_system2.h"
 #include "phys_subsystem.h"
 #include "physics/body.h"
 #include "physics/geom.h"

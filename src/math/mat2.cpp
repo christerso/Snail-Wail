@@ -69,6 +69,16 @@ mat2 &mat2::operator *= (const mat2 &m) {
   return *this;
 }
 
+mat2 mat2::inverse() const {
+  const float d = det();
+  return mat2( elements[1][1] / d, -elements[1][0] / d,
+              -elements[0][1] / d,  elements[0][0] / d);
+}
+
+float mat2::det() const {
+  return elements[0][0] * elements[1][1] - elements[1][0] * elements[0][1];
+}
+
 mat2 mat2::Rotation(float rad) {
   const float negrad = -rad; // I prefer the rotation to be CW
   return mat2(cos(negrad), -sin(negrad),

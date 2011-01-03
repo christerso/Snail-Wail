@@ -26,7 +26,9 @@ public:
   mat2 operator * (const mat2 &m) const;
   mat2 &operator *= (const mat2 &m);
   
-  // FIXME: inverse
+  mat2 inverse() const;
+  float det() const;
+  
   vec2 getX() const;
   vec2 getY() const;
   

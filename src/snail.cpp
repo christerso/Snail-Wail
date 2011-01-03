@@ -15,7 +15,7 @@
 
 #include <iostream>
 
-Snail::Snail() {
+Snail::Snail(SnailType type) {
   health = 100;
 
   TagPair tags[] = {

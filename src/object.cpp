@@ -70,7 +70,7 @@ void Object::deactivate() {
 
 void Object::addTags(std::pair<std::string, Tag> *begin,
                      std::pair<std::string, Tag> *end) {
-  std::copy(begin, end, std::back_inserter(tags));
+  tags.insert(tags.end(), begin, end);
   std::sort(tags.begin(), tags.end(), less1st<TagPair>());
 }
 

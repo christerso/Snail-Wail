@@ -64,7 +64,7 @@ Ref<Snail>::SharedPtr ObjectCreator::createSnail(int team, ObjectCreator & creat
    else
       xPos = 700.0f;
    
-   Ref<Snail>::SharedPtr newSnail(new Snail);
+   Ref<Snail>::SharedPtr newSnail(new Snail((team == 0) ? SnailLeft : SnailRight));
 
    // Create a coordinate system that describes the origin of the snail
    newSnail->origin = Owning(new CoordSystemLeaf2);

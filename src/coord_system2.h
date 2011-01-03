@@ -17,6 +17,60 @@
 
 #include "math/vec2.h"
 #include "math/mat2.h"
+#include "ref.h"
+
+#include <vector>
+
+/// Describes a transformation in a 2D coordinate system. What kind of space a
+/// transformation will take a frame of reference depends on the use and context
+/// of the transformation; this class is agnostic of [World|Model|Eye]View et al.
+class Transform2 {
+public:
+  typedef vec2 position_type;
+  typedef mat2 orientation_type;
+
+  Transform2(const position_type &pos, const orientation_type &orient);
+
+  /// Transform a 2D vector by this transformation.
+  vec2 transform(const vec2 &other) const;
+
+  /// Transform another transformation, the return value will be relative to
+  /// this.
+  Transform2 transform(const Transform2 &other) const;
+
+  /// Get the inverse of this transformation. Transforming a transformation by
+  /// its inverse should yield Identity().
+  Transform2 inverse() const;
+
+
+  position_type position;
+  orientation_type orientation;
+};
+
+/// Transformations can be connected together forming a directed acyclic graph,
+/// changes to a node will propagate to its children/delegates. Make sure not to
+/// introduce any cycles; they are not detected here!
+class TransformNode2 {
+public:
+
+  /// Add a child/delegate to this node that should receive transformation
+  /// updates. Updates will be relative to the last transformation, and the
+  /// delegate will be removed from the list if its reference fails to lock.
+  void addDelegate(const Ref<TransformNode2> &delegate);
+
+  /// Set the transformation and propagate the change to the delegates.
+  void setTransform(const Transform2 &transform);
+
+  /// Get the local transformation
+  Transform2 getTransform() const;
+
+  
+private:
+  typedef std::vector<Ref<TransformNode2> > NodeVector;
+
+  Transform2 transformation;
+  NodeVector delegates;
+};
 
 // FIXME: this needs testing, preferably sooner than later
 

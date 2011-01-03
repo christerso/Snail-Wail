@@ -262,3 +262,7 @@
     [25] restructing engine
     [25] restructing engine
     
+2011-01-03
+    [2h] worked on coordinate system handling, introduced tags
+    [1.5h] created new implementation for coordinate system handling, I think
+           this should be the last time. I'm pretty satisfied.

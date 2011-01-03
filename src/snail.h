@@ -36,9 +36,14 @@ public:
 };
 
 
+enum SnailType {
+  SnailLeft = 1,
+  SnailRight
+};
+
 class Snail : public Object, public Physics::GeomEventHandler {
 public:
-  Snail();
+  Snail(SnailType type);
   
   void collided(const Ref<Physics::Geom>::SharedPtr & with);
   

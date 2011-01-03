@@ -67,8 +67,8 @@ public:
   }
 
 private:
-  const Ref<Object> object;
-  const std::string id;
+  Ref<Object> object;
+  std::string id;
 };
 
 
