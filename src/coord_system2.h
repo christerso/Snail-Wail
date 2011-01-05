@@ -22,8 +22,11 @@
 #include <vector>
 
 /// Describes a transformation in a 2D coordinate system. What kind of space a
-/// transformation will take a frame of reference depends on the use and context
-/// of the transformation; this class is agnostic of [World|Model|Eye]View et al.
+/// transformation will take a frame of reference to depends on the use and
+/// context of the transformation; this class is agnostic of
+/// [World|Model|Eye]View et al.
+///
+/// @brief A transformation in 2D space 
 class Transform2 {
 public:
   typedef vec2 position_type;
@@ -50,12 +53,16 @@ public:
 /// Transformations can be connected together forming a directed acyclic graph,
 /// changes to a node will propagate to its children/delegates. Make sure not to
 /// introduce any cycles; they are not detected here!
+///
+/// @brief A node in a DAG of 2D transformations
 class TransformNode2 {
 public:
 
   /// Add a child/delegate to this node that should receive transformation
   /// updates. Updates will be relative to the last transformation, and the
   /// delegate will be removed from the list if its reference fails to lock.
+  ///
+  /// @brief Add a child/delegate to this node
   void addDelegate(const Ref<TransformNode2> &delegate);
 
   /// Set the transformation and propagate the change to the delegates.
