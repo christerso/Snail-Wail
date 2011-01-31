@@ -1,0 +1,14 @@
+Setup:
+
+Add the full path to the gcc wrapper (the gcc-android script and g++-android symlink)
+For example:
+export ANDROID_GCC_WRAPPERS=/home/christerso/projects/Snail-Wail/src/engine/android
+
+Look in android-build-env and verify that the android-ndk is the one you're using.
+Otherwise just adjust the paths in these places:
+export PATH="$ANDROID_GCC_WRAPPERS:$ANDROID_NDK_ROOT/toolchains/arm-eabi-4.4.0/prebuilt/linux-x86/bin:$PATH"
+export ANDROID_NDK_ROOT="$HOME/android-ndk-r5"
+
+Compile:
+for clean compiles (while developing) mkdir build; cd build; cmake ../ ; make
+

@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 2.6)
+project(wail)
+set (CMAKE_COMPILER "$CXX")
+set(ANDROID_INCLUDE_PATH "$ENV{SYSROOT}/usr/include")
+message(STATUS "Using include path ${ANDROID_INCLUDE_PATH}")
+add_subdirectory(src)
+add_subdirectory(test)
+enable_testing()
